@@ -21,6 +21,7 @@ package davaguine.jmac.spi;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
+import java.util.Map;
 
 /**
  * Author: Dmitry Vaguine
@@ -41,12 +42,14 @@ public class APEAudioFileFormat extends AudioFileFormat {
      * Constructs an audio file format object for MAC audio format.
      *
      * @param type        - the type of the audio file
-     * @param byteLength  - the length of the file in bytes, or AudioSystem.NOT_SPECIFIED
      * @param format      - the format of the audio data contained in the file
-     * @param frameLength - the audio data length in sample frames, or AudioSystem.NOT_SPECIFIED
+     * @param frameLength the audio data length in sample frames, or
+     *                    <code>AudioSystem.NOT_SPECIFIED</code>
+     * @param properties  a <code>Map&lt;String,Object&gt;</code> object
+     *        with properties
      */
-    public APEAudioFileFormat(Type type, int byteLength, AudioFormat format, int frameLength) {
-        super(type, byteLength, format, frameLength);
+    public APEAudioFileFormat(Type type, AudioFormat format, int frameLength, Map<String, Object> properties) {
+        super(type, format, frameLength, properties);
     }
 
 }

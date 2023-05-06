@@ -144,7 +144,7 @@ public class APEAudioFileReader extends AudioFileReader {
      * @throws IOException                   - if an I/O exception occurs
      */
     public AudioInputStream getAudioInputStream(File file) throws UnsupportedAudioFileException, IOException {
-        InputStream inputStream = new FileInputStream(file);
+        InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
         try {
             final AudioFileFormat format = getAudioFileFormat(file);
             return new AudioInputStream(inputStream, format.getFormat(), format.getFrameLength());

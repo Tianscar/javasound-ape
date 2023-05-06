@@ -27,7 +27,7 @@ dependencies {
 
 ## Usage
 [Tests and Examples](/src/test/java/davaguine/jmac/test/)  
-[Command-line Interfaces](/src/test/java/davaguine/jmac/cli/)
+[Command-line interfaces](/src/test/java/davaguine/jmac/cli/)
 
 ## License
 [LGPL-2.0](/LICENSE)  

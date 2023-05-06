@@ -17,7 +17,7 @@
  *----------------------------------------------------------------------
  */
 
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import javax.sound.sampled.*;
 import java.io.File;

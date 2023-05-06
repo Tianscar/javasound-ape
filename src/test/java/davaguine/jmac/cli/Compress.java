@@ -17,9 +17,10 @@
  *----------------------------------------------------------------------
  */
 
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import davaguine.jmac.core.APESimple;
+import davaguine.jmac.info.CompressionLevel;
 import davaguine.jmac.tools.ProgressCallback;
 
 /**
@@ -27,7 +28,7 @@ import davaguine.jmac.tools.ProgressCallback;
  * Date: 04.03.2004
  * Time: 14:51:31
  */
-public class Verify extends ProgressCallback {
+public class Compress extends ProgressCallback {
     private static long g_nInitialTickCount;
 
     public void callback(int persent) {
@@ -38,14 +39,18 @@ public class Verify extends ProgressCallback {
         System.out.println("Progress: " + dProgress + " (" + dSecondsRemaining + " seconds remaining)          ");
     }
 
+    public void updateStatus(String msg) {
+        System.out.println(msg);
+    }
+
     public static void main(String[] args) {
         try {
             ///////////////////////////////////////////////////////////////////////////////
             // error check the command line parameters
             ///////////////////////////////////////////////////////////////////////////////
-            if (args.length != 1) {
+            if (args.length != 2) {
                 System.out.print("~~~Improper Usage~~~\n\n");
-                System.out.print("Usage Example: Verify \"c:\\1.ape\"\n\n");
+                System.out.print("Usage Example: Compress \"c:\\1.wav\" \"c:\\1.ape\"\n\n");
                 return;
             }
 
@@ -53,6 +58,7 @@ public class Verify extends ProgressCallback {
             // variable declares
             ///////////////////////////////////////////////////////////////////////////////
             String pFilename = args[0];		//the file to open
+            String pOFilename = args[1];    //the file to open
 
             ///////////////////////////////////////////////////////////////////////////////
             // attempt to verify the file
@@ -60,10 +66,10 @@ public class Verify extends ProgressCallback {
 
             // set the start time and display the starting message
             g_nInitialTickCount = System.currentTimeMillis();
-            System.out.println("Verifying '" + pFilename + "'...");
+            System.out.println("Compressing '" + pFilename + "'...");
 
             // do the verify (call unmac.dll)
-            APESimple.VerifyFile(pFilename, new Verify());
+            APESimple.CompressFile(pFilename, pOFilename, CompressionLevel.COMPRESSION_LEVEL_INSANE, new Compress());
 
             // process the return value
         } catch (Exception e) {

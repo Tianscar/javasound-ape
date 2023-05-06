@@ -16,7 +16,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *----------------------------------------------------------------------
  */
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import davaguine.jmac.decoder.IAPEDecompress;
 import davaguine.jmac.info.APEInfo;

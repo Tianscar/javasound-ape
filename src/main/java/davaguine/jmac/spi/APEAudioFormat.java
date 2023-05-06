@@ -20,6 +20,7 @@
 package davaguine.jmac.spi;
 
 import javax.sound.sampled.AudioFormat;
+import java.util.Map;
 
 /**
  * Author: Dmitry Vaguine
@@ -44,8 +45,9 @@ public class APEAudioFormat extends AudioFormat {
      * @param frameSize        - the number of bytes in each frame
      * @param frameRate        - the number of frames per second
      * @param bigEndian        - indicates whether the data for a single sample is stored in big-endian byte order (false means little-endian)
+     * @param properties       - a Map<String,Object> object containing format properties
      */
-    public APEAudioFormat(Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian) {
-        super(encoding, sampleRate, sampleSizeInBits, channels, frameSize, frameRate, bigEndian);
+    public APEAudioFormat(Encoding encoding, float sampleRate, int sampleSizeInBits, int channels, int frameSize, float frameRate, boolean bigEndian, Map<String, Object> properties) {
+        super(encoding, sampleRate, sampleSizeInBits, channels, frameSize, frameRate, bigEndian, properties);
     }
 }

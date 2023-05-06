@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    libraryName = 'Java Monkey\'s Audio Compression Decoder'
+    libraryName = 'Java Monkey\'s Audio Compression Codec'
     libraryGroupName = 'com.tianscar.javasound'
     libraryVendorName = 'Tianscar'
 
@@ -52,7 +52,7 @@ publishing {
             from components.java
             pom {
                 name = libraryName
-                description = 'Java implementation of Monkey\'s Audio Compression decoder'
+                description = 'Java implementation of Monkey\'s Audio Compression codec'
                 url = 'https://github.com/Tianscar/jmac'
                 licenses {
                     license {

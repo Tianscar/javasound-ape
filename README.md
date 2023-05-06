@@ -1,8 +1,8 @@
-# Java Monkey's Audio Compression Decoder
+# Java Monkey's Audio Compression Codec
 This is a fork of [JMAC](https://jmac.sourceforge.net/), updated to Java 8 and removed the native part.
 
 JMAC is a Java implementation of Monkey's Audio Compression
-decoder. JMAC is a Java library that decodes, converts and plays
+codec. JMAC is a Java library that decodes, converts and plays
 Monkey's Audio files (.MAC, .APL, .APE) up to version 3.99 in real time.
 JMAC doesn't need JMF. It runs under J2SE.
 

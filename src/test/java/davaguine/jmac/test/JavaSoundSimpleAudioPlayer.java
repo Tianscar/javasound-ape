@@ -47,7 +47,7 @@ public class JavaSoundSimpleAudioPlayer {
             playAudioFile(args[i]);
 
         // Must exit explicitly since audio creates non-daemon threads.
-        System.exit(0);
+        // System.exit(0);
     } // main
 
     /**

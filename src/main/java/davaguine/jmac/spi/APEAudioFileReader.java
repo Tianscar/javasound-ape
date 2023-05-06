@@ -31,6 +31,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.spi.AudioFileReader;
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author: Dmitry Vaguine
@@ -42,6 +46,7 @@ import java.net.URL;
  * Provider for MAC audio file reading.
  */
 public class APEAudioFileReader extends AudioFileReader {
+
     private final static int MAX_HEADER_SIZE = 16384;
 
     /**
@@ -57,18 +62,11 @@ public class APEAudioFileReader extends AudioFileReader {
         IAPEDecompress decoder;
         try {
             decoder = IAPEDecompress.CreateIAPEDecompress(new davaguine.jmac.tools.RandomAccessFile(file, "r"));
-        } catch (JMACException e) {
-            throw new UnsupportedAudioFileException("Unsupported audio file");
-        } catch (EOFException e) {
+        } catch (JMACException | EOFException e) {
             throw new UnsupportedAudioFileException("Unsupported audio file");
         }
 
-        APEAudioFormat format = new APEAudioFormat(APEEncoding.APE, decoder.getApeInfoSampleRate(),
-                decoder.getApeInfoBitsPerSample(),
-                decoder.getApeInfoChannels(),
-                AudioSystem.NOT_SPECIFIED, AudioSystem.NOT_SPECIFIED, false);
-
-        return new APEAudioFileFormat(APEAudioFileFormatType.APE, (int) file.length(), format, AudioSystem.NOT_SPECIFIED);
+        return getAudioFileFormat(decoder);
     }
 
     /**
@@ -82,8 +80,12 @@ public class APEAudioFileReader extends AudioFileReader {
     public AudioFileFormat getAudioFileFormat(URL url) throws UnsupportedAudioFileException, IOException {
         InputStream inputStream = url.openStream();
         try {
-            return getAudioFileFormat(inputStream);
-        } finally {
+            return getAudioFileFormat(IAPEDecompress.CreateIAPEDecompress(new InputStreamFile(inputStream)));
+        }
+        catch (JMACException | EOFException e) {
+            throw new UnsupportedAudioFileException("Unsupported audio file");
+        }
+        finally {
             inputStream.close();
         }
     }
@@ -98,21 +100,25 @@ public class APEAudioFileReader extends AudioFileReader {
      */
     public AudioFileFormat getAudioFileFormat(InputStream stream) throws UnsupportedAudioFileException, IOException {
         if (Globals.DEBUG) System.out.println("APEAudioFileReader.getAudioFileFormat( InputStream )");
-        IAPEDecompress decoder;
+        stream.mark(MAX_HEADER_SIZE);
         try {
-            decoder = IAPEDecompress.CreateIAPEDecompress(new InputStreamFile(stream));
-        } catch (JMACException e) {
-            throw new UnsupportedAudioFileException("Unsupported audio file");
-        } catch (EOFException e) {
+            return getAudioFileFormat(IAPEDecompress.CreateIAPEDecompress(new InputStreamFile(stream)));
+        }
+        catch (JMACException | EOFException e) {
+            stream.reset();
             throw new UnsupportedAudioFileException("Unsupported audio file");
         }
+    }
 
+    private static AudioFileFormat getAudioFileFormat(IAPEDecompress decoder) {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("duration", decoder.getApeInfoDecompressLengthMS() * 1000L);
         APEAudioFormat format = new APEAudioFormat(APEEncoding.APE, decoder.getApeInfoSampleRate(),
                 decoder.getApeInfoBitsPerSample(),
                 decoder.getApeInfoChannels(),
-                AudioSystem.NOT_SPECIFIED, AudioSystem.NOT_SPECIFIED, false);
-
-        return new APEAudioFileFormat(APEAudioFileFormatType.APE, AudioSystem.NOT_SPECIFIED, format, AudioSystem.NOT_SPECIFIED);
+                decoder.getApeInfoChannels() * 2,
+                decoder.getApeInfoSampleRate(), false, properties);
+        return new APEAudioFileFormat(APEAudioFileFormatType.APE, format, AudioSystem.NOT_SPECIFIED, properties);
     }
 
     /**
@@ -124,12 +130,9 @@ public class APEAudioFileReader extends AudioFileReader {
      * @throws IOException                   - if an I/O exception occurs
      */
     public AudioInputStream getAudioInputStream(InputStream stream) throws UnsupportedAudioFileException, IOException {
-        // Save byte header since this method must return the stream opened at byte 0.
-        final BufferedInputStream in = new BufferedInputStream(stream);
-        in.mark(MAX_HEADER_SIZE);
-        final AudioFileFormat format = getAudioFileFormat(in);
-        in.reset();
-        return new AudioInputStream(in, format.getFormat(), format.getFrameLength());
+        final AudioFileFormat format = getAudioFileFormat(stream);
+        stream.reset();
+        return new AudioInputStream(stream, format.getFormat(), format.getFrameLength());
     }
 
     /**
@@ -141,13 +144,11 @@ public class APEAudioFileReader extends AudioFileReader {
      * @throws IOException                   - if an I/O exception occurs
      */
     public AudioInputStream getAudioInputStream(File file) throws UnsupportedAudioFileException, IOException {
-        InputStream inputStream = new FileInputStream(file);
+        InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
         try {
-            return getAudioInputStream(inputStream);
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+            final AudioFileFormat format = getAudioFileFormat(file);
+            return new AudioInputStream(inputStream, format.getFormat(), format.getFrameLength());
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }
@@ -163,12 +164,13 @@ public class APEAudioFileReader extends AudioFileReader {
      */
     public AudioInputStream getAudioInputStream(URL url) throws UnsupportedAudioFileException, IOException {
         InputStream inputStream = url.openStream();
+        // Save byte header since this method must return the stream opened at byte 0.
+        inputStream = inputStream.markSupported() ? inputStream : new BufferedInputStream(inputStream);
         try {
-            return getAudioInputStream(inputStream);
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+            final AudioFileFormat format = getAudioFileFormat(inputStream);
+            inputStream.reset();
+            return new AudioInputStream(inputStream, format.getFormat(), format.getFrameLength());
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }

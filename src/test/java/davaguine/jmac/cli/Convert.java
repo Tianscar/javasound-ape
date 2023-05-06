@@ -17,7 +17,7 @@
  *----------------------------------------------------------------------
  */
 
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import davaguine.jmac.core.APESimple;
 import davaguine.jmac.info.CompressionLevel;
@@ -28,7 +28,7 @@ import davaguine.jmac.tools.ProgressCallback;
  * Date: 04.03.2004
  * Time: 14:51:31
  */
-public class Compress extends ProgressCallback {
+public class Convert extends ProgressCallback {
     private static long g_nInitialTickCount;
 
     public void callback(int persent) {
@@ -39,10 +39,6 @@ public class Compress extends ProgressCallback {
         System.out.println("Progress: " + dProgress + " (" + dSecondsRemaining + " seconds remaining)          ");
     }
 
-    public void updateStatus(String msg) {
-        System.out.println(msg);
-    }
-
     public static void main(String[] args) {
         try {
             ///////////////////////////////////////////////////////////////////////////////
@@ -50,7 +46,7 @@ public class Compress extends ProgressCallback {
             ///////////////////////////////////////////////////////////////////////////////
             if (args.length != 2) {
                 System.out.print("~~~Improper Usage~~~\n\n");
-                System.out.print("Usage Example: Compress \"c:\\1.wav\" \"c:\\1.ape\"\n\n");
+                System.out.print("Usage Example: Convert \"c:\\1.ape\" \"c:\\2.ape\"\n\n");
                 return;
             }
 
@@ -66,10 +62,10 @@ public class Compress extends ProgressCallback {
 
             // set the start time and display the starting message
             g_nInitialTickCount = System.currentTimeMillis();
-            System.out.println("Compressing '" + pFilename + "'...");
+            System.out.println("Converting '" + pFilename + "'...");
 
             // do the verify (call unmac.dll)
-            APESimple.CompressFile(pFilename, pOFilename, CompressionLevel.COMPRESSION_LEVEL_INSANE, new Compress());
+            APESimple.ConvertFile(pFilename, pOFilename, CompressionLevel.COMPRESSION_LEVEL_HIGH, new Convert());
 
             // process the return value
         } catch (Exception e) {

@@ -17,7 +17,7 @@
  *----------------------------------------------------------------------
  */
 
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import davaguine.jmac.core.APESimple;
 import davaguine.jmac.tools.ProgressCallback;

@@ -1,5 +1,9 @@
 package davaguine.jmac.test;
 
+import davaguine.jmac.cli.Compress;
+import davaguine.jmac.cli.Decompress;
+import davaguine.jmac.cli.JavaSoundSimpleAudioPlayer;
+import davaguine.jmac.cli.Verify;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -17,10 +17,9 @@
  *----------------------------------------------------------------------
  */
 
-package davaguine.jmac.test;
+package davaguine.jmac.cli;
 
 import davaguine.jmac.core.APESimple;
-import davaguine.jmac.info.CompressionLevel;
 import davaguine.jmac.tools.ProgressCallback;
 
 /**
@@ -28,7 +27,7 @@ import davaguine.jmac.tools.ProgressCallback;
  * Date: 04.03.2004
  * Time: 14:51:31
  */
-public class Convert extends ProgressCallback {
+public class Verify extends ProgressCallback {
     private static long g_nInitialTickCount;
 
     public void callback(int persent) {
@@ -44,9 +43,9 @@ public class Convert extends ProgressCallback {
             ///////////////////////////////////////////////////////////////////////////////
             // error check the command line parameters
             ///////////////////////////////////////////////////////////////////////////////
-            if (args.length != 2) {
+            if (args.length != 1) {
                 System.out.print("~~~Improper Usage~~~\n\n");
-                System.out.print("Usage Example: Convert \"c:\\1.ape\" \"c:\\2.ape\"\n\n");
+                System.out.print("Usage Example: Verify \"c:\\1.ape\"\n\n");
                 return;
             }
 
@@ -54,7 +53,6 @@ public class Convert extends ProgressCallback {
             // variable declares
             ///////////////////////////////////////////////////////////////////////////////
             String pFilename = args[0];		//the file to open
-            String pOFilename = args[1];    //the file to open
 
             ///////////////////////////////////////////////////////////////////////////////
             // attempt to verify the file
@@ -62,10 +60,10 @@ public class Convert extends ProgressCallback {
 
             // set the start time and display the starting message
             g_nInitialTickCount = System.currentTimeMillis();
-            System.out.println("Converting '" + pFilename + "'...");
+            System.out.println("Verifying '" + pFilename + "'...");
 
             // do the verify (call unmac.dll)
-            APESimple.ConvertFile(pFilename, pOFilename, CompressionLevel.COMPRESSION_LEVEL_HIGH, new Convert());
+            APESimple.VerifyFile(pFilename, new Verify());
 
             // process the return value
         } catch (Exception e) {

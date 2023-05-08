@@ -46,22 +46,22 @@ public class APEPropertiesHelper {
      * @param formatProperties - properties Map for audio format properties
      * @throws IOException -  in case of IO error occured
      */
-    public static void readProperties(IAPEDecompress decoder, Map fileProperties, Map formatProperties) throws IOException {
-        formatProperties.put("bitrate", new Integer(decoder.getApeInfoDecompressAverageBitrate()));
-        formatProperties.put("vbr", new Boolean(true));
-        formatProperties.put("quality", new Integer(10));
+    public static void readProperties(IAPEDecompress decoder, Map<String, Object> fileProperties, Map<String, Object> formatProperties) throws IOException {
+        formatProperties.put("bitrate", decoder.getApeInfoDecompressAverageBitrate());
+        formatProperties.put("vbr", Boolean.TRUE);
+        formatProperties.put("quality", 10);
 
-        formatProperties.put("ape.version", new Integer(decoder.getApeInfoFileVersion()));
-        formatProperties.put("ape.compressionlevel", new Integer(decoder.getApeInfoCompressionLevel()));
-        formatProperties.put("ape.formatflags", new Integer(decoder.getApeInfoFormatFlags()));
-        formatProperties.put("ape.totalframes", new Integer(decoder.getApeInfoTotalFrames()));
-        formatProperties.put("ape.blocksperframe", new Integer(decoder.getApeInfoBlocksPerFrame()));
-        formatProperties.put("ape.finalframeblocks", new Integer(decoder.getApeInfoFinalFrameBlocks()));
-        formatProperties.put("ape.blockalign", new Integer(decoder.getApeInfoBlockAlign()));
-        formatProperties.put("ape.totalblocks", new Integer(decoder.getApeInfoTotalBlocks()));
-        formatProperties.put("ape.peaklevel", new Integer(decoder.getApeInfoPeakLevel()));
+        formatProperties.put("ape.version", decoder.getApeInfoFileVersion());
+        formatProperties.put("ape.compressionlevel", decoder.getApeInfoCompressionLevel());
+        formatProperties.put("ape.formatflags", decoder.getApeInfoFormatFlags());
+        formatProperties.put("ape.totalframes", decoder.getApeInfoTotalFrames());
+        formatProperties.put("ape.blocksperframe", decoder.getApeInfoBlocksPerFrame());
+        formatProperties.put("ape.finalframeblocks", decoder.getApeInfoFinalFrameBlocks());
+        formatProperties.put("ape.blockalign", decoder.getApeInfoBlockAlign());
+        formatProperties.put("ape.totalblocks", decoder.getApeInfoTotalBlocks());
+        formatProperties.put("ape.peaklevel", decoder.getApeInfoPeakLevel());
 
-        fileProperties.put("duration", new Long(decoder.getApeInfoLengthMs()));
+        fileProperties.put("duration", decoder.getApeInfoLengthMs() * 1000L);
         if (decoder.getApeInfoIoSource().isLocal()) {
             APETag tag = decoder.getApeInfoTag();
             fileProperties.put("author", tag.GetFieldString(APETag.APE_TAG_FIELD_ARTIST));
@@ -74,7 +74,7 @@ public class APEPropertiesHelper {
                 c.clear();
                 c.set(Calendar.YEAR, Integer.parseInt(year));
                 date = c.getTime();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             fileProperties.put("date", date);
             fileProperties.put("comment", tag.GetFieldString(APETag.APE_TAG_FIELD_COMMENT));

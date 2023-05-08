@@ -110,15 +110,16 @@ public class APEAudioFileReader extends AudioFileReader {
         }
     }
 
-    private static AudioFileFormat getAudioFileFormat(IAPEDecompress decoder) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("duration", decoder.getApeInfoDecompressLengthMS() * 1000L);
+    private static AudioFileFormat getAudioFileFormat(IAPEDecompress decoder) throws IOException {
+        Map<String, Object> fileProperties = new HashMap<>();
+        Map<String, Object> formatProperties = new HashMap<>();
+        APEPropertiesHelper.readProperties(decoder, fileProperties, formatProperties);
         APEAudioFormat format = new APEAudioFormat(APEEncoding.APE, decoder.getApeInfoSampleRate(),
                 decoder.getApeInfoBitsPerSample(),
                 decoder.getApeInfoChannels(),
                 decoder.getApeInfoChannels() * 2,
-                decoder.getApeInfoSampleRate(), false, properties);
-        return new APEAudioFileFormat(APEAudioFileFormatType.APE, format, AudioSystem.NOT_SPECIFIED, properties);
+                decoder.getApeInfoSampleRate(), false, formatProperties);
+        return new APEAudioFileFormat(APEAudioFileFormatType.APE, format, AudioSystem.NOT_SPECIFIED, fileProperties);
     }
 
     /**

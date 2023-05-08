@@ -21,7 +21,7 @@ repositories {
 ```groovy
 dependencies {
     ...
-    implementation 'com.tianscar.javasound:jmac:1.7.5'
+    implementation 'com.tianscar.javasound:jmac:1.7.6'
 }
 ```
 

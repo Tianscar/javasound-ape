@@ -9,8 +9,8 @@ ext {
     libraryGroupName = 'com.tianscar.javasound'
     libraryVendorName = 'Tianscar'
 
-    libraryVersionCode = 2
-    libraryVersionName = '1.7.6'
+    libraryVersionCode = 3
+    libraryVersionName = '1.7.7'
 
     librarySourceCompatibility = JavaVersion.VERSION_1_8
     libraryTargetCompatibility = JavaVersion.VERSION_1_8
@@ -53,7 +53,7 @@ publishing {
             pom {
                 name = libraryName
                 description = 'Java implementation of Monkey\'s Audio Compression codec'
-                url = 'https://github.com/Tianscar/jmac'
+                url = 'https://github.com/Tianscar/javasound-ape'
                 licenses {
                     license {
                         name = 'GNU Library or Lesser General Public License, Version 2.0'
@@ -68,9 +68,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git@github.com/Tianscar/jmac.git'
-                    developerConnection = 'scm:git:git@github.com/Tianscar/jmac.git'
-                    url = 'https://github.com/Tianscar/jmac'
+                    connection = 'scm:git:git@github.com/Tianscar/javasound-ape.git'
+                    developerConnection = 'scm:git:git@github.com/Tianscar/javasound-ape.git'
+                    url = 'https://github.com/Tianscar/javasound-ape'
                 }
             }
         }

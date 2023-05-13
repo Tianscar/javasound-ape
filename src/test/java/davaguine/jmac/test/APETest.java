@@ -15,7 +15,7 @@ public class APETest {
     @Test
     @DisplayName("unsupported exception")
     public void unsupported() {
-        try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("fbodemo1.ogg")) {
+        try (InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("fbodemo1_vorbis.ogg")) {
             assertThrows(UnsupportedAudioFileException.class, () -> {
                 new APEAudioFileReader().getAudioInputStream(stream);
             });

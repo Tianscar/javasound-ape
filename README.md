@@ -31,4 +31,9 @@ Note you need to download test audios [here](https://github.com/Tianscar/fbodemo
 
 ## License
 [LGPL-2.0](/LICENSE)  
-[audios for test](/src/test/resources) originally created by [ProHonor](https://github.com/Aislandz), authorized [me](https://github.com/Tianscar) to use. 2023 (c) ProHonor, all rights reserved.
+
+### Dependencies
+| Library                                                                                       | License  | Comptime | Runtime |
+|-----------------------------------------------------------------------------------------------|----------|----------|---------|
+| [Tritonus Share](https://mvnrepository.com/artifact/com.googlecode.soundlibs/tritonus-share)  | LGPL-2.1 | Yes      | Yes     |
+

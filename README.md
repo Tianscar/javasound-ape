@@ -1,3 +1,5 @@
+WARNING: THIS PROJECT IS NO LONGER MAINTAINED. MOVED TO: https://github.com/jseproject/jse-spi
+
 # Java Monkey's Audio Compression Codec
 This is a fork of [JMAC](https://jmac.sourceforge.net/), containing bug fixes, updated to Java 8 and removed the native part.
 
